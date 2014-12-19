@@ -14,4 +14,4 @@ meta-spec:
 name: Dancer-Plugin-TimeoutManager
 requires:
   Dancer: 1.3120
-version: 0.04
+version: 0.05

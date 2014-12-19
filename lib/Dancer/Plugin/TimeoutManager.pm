@@ -2,6 +2,7 @@ package Dancer::Plugin::TimeoutManager;
 
 use strict;
 use warnings;
+our $VERSION = '0.05'; # VERSION
 
 use Dancer ':syntax';
 use Dancer::Exception ':all';
@@ -9,7 +10,6 @@ use Dancer::Plugin;
 use Data::Dumper;
 use Carp 'croak';
 use List::MoreUtils qw( none);
-
 
 #get the timeout from headers
 hook(before => sub { 
