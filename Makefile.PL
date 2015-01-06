@@ -21,10 +21,11 @@ my %WriteMakefileArgs = (
   "LICENSE" => "restrictive",
   "NAME" => "Dancer::Plugin::TimeoutManager",
   "PREREQ_PM" => {
-    "Dancer" => "1.3120"
+    "Dancer" => "1.3120",
+    "List::MoreUtils" => "0.33"
   },
   "TEST_REQUIRES" => {},
-  "VERSION" => "0.05",
+  "VERSION" => "0.07",
   "test" => {
     "TESTS" => "t/*.t"
   }
@@ -32,7 +33,8 @@ my %WriteMakefileArgs = (
 
 
 my %FallbackPrereqs = (
-  "Dancer" => "1.3120"
+  "Dancer" => "1.3120",
+  "List::MoreUtils" => "0.33"
 );
 
 

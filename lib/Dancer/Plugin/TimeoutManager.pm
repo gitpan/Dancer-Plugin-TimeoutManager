@@ -2,7 +2,7 @@ package Dancer::Plugin::TimeoutManager;
 
 use strict;
 use warnings;
-our $VERSION = '0.05'; # VERSION
+our $VERSION = '0.07'; # VERSION
 
 use Dancer ':syntax';
 use Dancer::Exception ':all';
