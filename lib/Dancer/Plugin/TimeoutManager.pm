@@ -2,8 +2,9 @@ package Dancer::Plugin::TimeoutManager;
 
 use strict;
 use warnings;
-our $VERSION = '0.07'; # VERSION
+our $VERSION = '0.08'; # VERSION
 
+use Try::Tiny;
 use Dancer ':syntax';
 use Dancer::Exception ':all';
 use Dancer::Plugin;
@@ -28,6 +29,24 @@ register_exception ('InvalidMethod',
 
 my @authorized_methods = ('get', 'post', 'put', 'delete');
 
+=method exception_message
+
+return the exception message
+This method can be used to catch the exception if the code used already contained a try catch
+
+=cut 
+
+sub exception_message{
+
+    return 'Route Timeout Detected';
+}
+
+=method timeout
+
+Method that manage the timeout on a dancer request
+
+=cut 
+
 sub timeout {
     my ($timeout,$method, $pattern, @rest);
     if (scalar(@_) == 4){
@@ -48,6 +67,7 @@ sub timeout {
         raise InvalidMethod => $method;
     }
     
+    my $exception_message = exception_message();
     my $timeout_route = sub {
         my $response;
 
@@ -55,20 +75,25 @@ sub timeout {
         $timeout = vars->{header_timeout} if (!defined $timeout && defined vars->{header_timeout});
 
         # if timeout is not defined or equal 0 the timeout manager is not used
+        my $timeout_exception;
         if (!$timeout){
             $response = $code->();
         }
         else{
-            eval {
-                local $SIG{ALRM} = sub { croak ("Route Timeout Detected"); };
+           try {
+                local $SIG{ALRM} = sub { croak ($exception_message); };
                 alarm($timeout);
+
                 $response = $code->();
                 alarm(0);
+            }
+            catch{
+                $timeout_exception = $_;
             };
             alarm(0);
         }
         # Timeout detected
-        if ($@ && $@ =~ /Route Timeout Detected/){
+        if ($timeout_exception && $timeout_exception =~ /$exception_message/){
             my $response_with_timeout = Dancer::Response->new(
                     status => 408,
                     content => "Request Timeout : more than $timeout seconds elapsed."
@@ -134,6 +159,9 @@ If the timeout is set to 0, the behavior is the same than without any timeout de
 
 It's also possible to define route handlers that will set a per-request timeout protection, depending 
 on the value of the header C<X-Dancer-Timeout>.
+
+If your Dancer code already use try catch, the exeption may be catched. 
+So exception_message method can be used to cath the content of the exception in your Dancer code.
 
 =head1 AUTHOR
 

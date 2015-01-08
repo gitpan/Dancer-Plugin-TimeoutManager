@@ -22,10 +22,11 @@ my %WriteMakefileArgs = (
   "NAME" => "Dancer::Plugin::TimeoutManager",
   "PREREQ_PM" => {
     "Dancer" => "1.3120",
-    "List::MoreUtils" => "0.33"
+    "List::MoreUtils" => "0.33",
+    "Try::Tiny" => "0.11"
   },
   "TEST_REQUIRES" => {},
-  "VERSION" => "0.07",
+  "VERSION" => "0.08",
   "test" => {
     "TESTS" => "t/*.t"
   }
@@ -34,7 +35,8 @@ my %WriteMakefileArgs = (
 
 my %FallbackPrereqs = (
   "Dancer" => "1.3120",
-  "List::MoreUtils" => "0.33"
+  "List::MoreUtils" => "0.33",
+  "Try::Tiny" => "0.11"
 );
 
 
